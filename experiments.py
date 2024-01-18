@@ -353,8 +353,8 @@ def generate_experiment_cfgs(id, machine_name):
     mix_masks_only_thing = False
     inst_pseduo_weight = None
     num_samples_debug = 12
-    gt_dir_instance = 'data/cityscapes/gtFine/val'
-    gt_dir_panoptic = 'data/cityscapes/gtFine_panoptic'
+    gt_dir_instance = '/data/home/wangxu/datasets/cityscapes/gtFine/val'
+    gt_dir_panoptic = '/data/home/wangxu/datasets/cityscapes/gtFine_panoptic'
     eval_metric_list = ['mIoU', 'mPQ', 'mAP']
     mapillary_dataloading_style = 'OURS'
     set_diff_pmult_for_sem_and_inst_heads = False
@@ -424,8 +424,8 @@ def generate_experiment_cfgs(id, machine_name):
         ann_dir = 'val_panoptic_19cls_debug' if debug else 'val_panoptic_19cls' #
         target = 'mapillary'
         num_samples_debug = 13
-        gt_dir_instance = 'data/mapillary/val_panoptic_19cls'
-        gt_dir_panoptic = 'data/mapillary'
+        gt_dir_instance = '/data/home/wangxu/datasets/mapillary/val_panoptic_19cls'
+        gt_dir_panoptic = '/data/home/wangxu/datasets/mapillary'
         seeds = [1, 2] # [0, 1, 2]
         plcrop = False
         for seed in seeds:
@@ -565,7 +565,7 @@ def generate_experiment_cfgs(id, machine_name):
         seed = 0
         batch_size = 1
         workers_per_gpu = 0
-        checkpoint_path = 'path/to/the/latest/checkpoint'
+        checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00006/checkpoints/edaps_synthia_to_cityscapes/latest.pth'
         cfg = config_from_vars()
         cfg['checkpoint_path'] = checkpoint_path
         cfgs.append(cfg)
@@ -583,7 +583,7 @@ def generate_experiment_cfgs(id, machine_name):
         workers_per_gpu = 0
         generate_only_visuals_without_eval = True
         dump_visuals_during_eval = True
-        checkpoint_path = 'path/to/the/latest/checkpoint'
+        checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00007/checkpoints/edaps_synthia_to_cityscapes/latest.pth'
         cfg = config_from_vars()
         cfg['checkpoint_path'] = checkpoint_path
         cfgs.append(cfg)

@@ -54,7 +54,7 @@ data = dict(
                 ),
         val=dict(
                 ann_dir="gtFine_panoptic/cityscapes_panoptic_val",
-                data_root="data/cityscapes"
+                data_root="/data/home/wangxu/datasets/cityscapes/"
         )
 )
 optimizer_config =  None

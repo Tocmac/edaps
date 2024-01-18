@@ -137,18 +137,18 @@ def main():
     parser.add_argument("--set-names", dest="setNames",  help="set names to which apply the function to",  nargs='+',  default=["val", "train", "test"],  type=str)
     args = parser.parse_args()
     # The root path where you save all you datasets
-    dataset_root = '/dataset/root/path'
-    args.cityscapesPath = f'{dataset_root}/Cityscapes/gtFine_trainvaltest/gtFine'
-    args.outputFolder = f'{dataset_root}/Cityscapes/gtFine_trainvaltest/gtFine_panoptic'
+    dataset_root = '/data/home/wangxu/datasets'
+    args.cityscapesPath = f'{dataset_root}/cityscapes/gtFine'
+    args.outputFolder = f'{dataset_root}/cityscapes/gtFine_panoptic'
     if not os.path.exists(args.outputFolder):
         os.makedirs(args.outputFolder)
     # You need to generate the panoptic labels on trainset for training the Oracle
     # --- For training set, set the following
-    # args.useTrainId = True
-    # args.setNames = ['train']
+    args.useTrainId = True
+    args.setNames = ['train']
     # --- For valset, set the following
-    args.useTrainId = False
-    args.setNames = ['val']
+    # args.useTrainId = False
+    # args.setNames = ['val']
     convert2panoptic(args.cityscapesPath, args.outputFolder, args.useTrainId, args.setNames)
 
 

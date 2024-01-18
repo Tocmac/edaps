@@ -15,14 +15,14 @@ pyquaternion
 imageio
 tensorboard
 future
-git+https://github.com/cocodataset/panopticapi.git
 gdown==4.2.0
 humanfriendly==9.2
 kornia==0.5.8
 prettytable==2.1.0
 seaborn==0.11.1
 timm==0.3.2
-tqdm==4.48.2
+tqdm==4.65.0
 typing-extensions==3.7.4.3
 wcwidth==0.2.5
+git+https://github.com/cocodataset/panopticapi.git
 

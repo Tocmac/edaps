@@ -1,4 +1,26 @@
 ## EDAPS: Enhanced Domain-Adaptive Panoptic Segmentation
+# daformer
+CUDA_VISIBLE_DEVICES=0 python run_experiments.py --config configs/daformer/gta2cs_uda_warm_fdthings_rcs_croppl_a999_daformer_mitb5_s0.py
+CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/daformer/gta2cs_uda_warm_fdthings_rcs_croppl_a999_daformer_mitb5_s0.py > /data/home/wangxu/code/DAFormer/work_dirs/local-basic/output/daformer_3.txt 2>&1 &
+sh test.sh work_dirs/211108_1622_gta2cs_daformer_s0_7f24c
+python -m tools.test path/to/config_file path/to/checkpoint_file --test-set --format-only --eval-option imgfile_prefix=labelTrainIds to_label_id=False
+
+# hrda
+python tools/convert_datasets/gta.py /media/rcus-cv/data/wangxu/dataset/gta --nproc 8
+python tools/convert_datasets/cityscapes.py /media/rcus-cv/data/wangxu/dataset/cityscapes --nproc 8
+CUDA_VISIBLE_DEVICES=1 python run_experiments.py --config configs/hrda/gtaHR2csHR_hrda.py
+CUDA_VISIBLE_DEVICES=0 nohup python run_experiments.py --config configs/hrda/gtaHR2csHR_hrda.py > /media/rcus-cv/data/wangxu/code/HRDA/work_dirs/local-basic/output/hrda.txt 2>&1 &
+sh test.sh work_dirs/gtaHR2csHR_hrda_246ef
+
+# mic
+CUDA_VISIBLE_DEVICES=1 python run_experiments.py --config configs/mic/gtaHR2csHR_mic_hrda.py
+CUDA_VISIBLE_DEVICES=1 nohup python run_experiments.py --config configs/mic/gtaHR2csHR_mic_hrda.py > /media/rcus-cv/data/wangxu/code/MIC/seg/work_dirs/local-basic/output/mic.txt 2>&1 &
+sh test.sh work_dirs/gtaHR2csHR_mic_hrda_650a8
+
+# EDAPS
+python run_experiments.py --exp 6
+
+
 
 **by [Suman Saha](https://susaha.github.io/), [Lukas Hoyer](https://lhoyer.github.io/), 
 [Anton Obukhov](https://www.obukhov.ai/), [Dengxin Dai](https://vas.mpi-inf.mpg.de/dengxin/), 

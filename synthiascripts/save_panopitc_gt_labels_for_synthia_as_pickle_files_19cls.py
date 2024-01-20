@@ -21,16 +21,16 @@ def main():
     _SYNTHIA_THING_LIST = [10, 17, 8, 18, 19, 20, 12, 11]
     crowd_th_list = [0] # [0, 1000, 2000]
     # The root path where you save all you datasets
-    dataset_root = '/dataset/root/path'
+    dataset_root = '/data/home/wangxu/datasets'
     for crowd_region_threshold in crowd_th_list:
         imgid = 0
-        label_path = 'Synthia/RAND_CITYSCAPES/GT/LABELS'
+        label_path = '/data/home/wangxu/datasets/synthia/RAND_CITYSCAPES/GT/LABELS'
         file_list = os.listdir(label_path)
         file_list.sort()
         # Set here the location where you save the pickle files.
         # You should have sufficent disk space to save them all.
         if not DEBUG:
-            out_path1 = '{}/Synthia/RAND_CITYSCAPES/GT/panoptic-labels-pklfiles-crowdth-{}-for-daformer'.format(dataset_root, crowd_region_threshold)
+            out_path1 = '{}/synthia/RAND_CITYSCAPES/GT/panoptic-labels-pklfiles-crowdth-{}-for-daformer'.format(dataset_root, crowd_region_threshold)
         else:
             out_path1 = '{}/synthia_gt_visual/pickle_files-crowdth-{}'.format(dataset_root, crowd_region_threshold)
         if not os.path.exists(out_path1):

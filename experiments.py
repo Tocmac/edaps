@@ -306,13 +306,14 @@ def generate_experiment_cfgs(id, machine_name):
     # -------------------------------------------------------------------------
     # Set some defaults
     # -------------------------------------------------------------------------
+    # debug = True
     debug = False
     machine = machine_name
     iters = 40000
     interval = iters
     interval_debug = 3
     uda = 'dacs'
-    data_root = 'data/cityscapes'
+    data_root = '/data/home/wangxu/datasets/cityscapes'
     # ----------------------------------------
     # --- Set the debug time configs ---
     # ----------------------------------------
@@ -321,7 +322,7 @@ def generate_experiment_cfgs(id, machine_name):
     workers_per_gpu = 0 if debug else 4 # if 'dacs' in uda else 2
     eval_interval = interval_debug if debug else interval
     checkpoint_interval = interval_debug if debug else interval
-    ann_dir = 'gtFine_panoptic_debug/cityscapes_panoptic_val' if debug else 'gtFine_panoptic/cityscapes_panoptic_val'
+    ann_dir = '/data/home/wangxu/datasets/cityscapes/gtFine_panoptic_debug/cityscapes_panoptic_val' if debug else '/data/home/wangxu/datasets/cityscapes/gtFine_panoptic/cityscapes_panoptic_val'
     log_interval = 1 if debug else 50
     debug_img_interval = 1 if debug else 5000
     # ----------------------------------------
@@ -420,7 +421,7 @@ def generate_experiment_cfgs(id, machine_name):
     # EDAPS (M-Dec-TD) : SYNTHIA → Mapillary (Table 2)
     # -------------------------------------------------------------------------
     elif id == 2:
-        data_root = 'data/mapillary'
+        data_root = '/data/home/wangxu/datasets/mapillary'
         ann_dir = 'val_panoptic_19cls_debug' if debug else 'val_panoptic_19cls' #
         target = 'mapillary'
         num_samples_debug = 13
@@ -565,7 +566,7 @@ def generate_experiment_cfgs(id, machine_name):
         seed = 0
         batch_size = 1
         workers_per_gpu = 0
-        checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00006/checkpoints/edaps_synthia_to_cityscapes/latest.pth'
+        checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00006/checkpoints/edaps_synthia_to_cityscapes/'
         cfg = config_from_vars()
         cfg['checkpoint_path'] = checkpoint_path
         cfgs.append(cfg)
@@ -583,7 +584,7 @@ def generate_experiment_cfgs(id, machine_name):
         workers_per_gpu = 0
         generate_only_visuals_without_eval = True
         dump_visuals_during_eval = True
-        checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00007/checkpoints/edaps_synthia_to_cityscapes/latest.pth'
+        checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00007/checkpoints/edaps_synthia_to_cityscapes/'
         cfg = config_from_vars()
         cfg['checkpoint_path'] = checkpoint_path
         cfgs.append(cfg)

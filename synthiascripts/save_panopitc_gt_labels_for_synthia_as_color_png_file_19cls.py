@@ -13,7 +13,8 @@ from PIL import Image
 import pickle
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
-from cityscapesscripts.helpers.labels import id2label
+# from cityscapesscripts.helpers.labels import id2label
+from labels import id2label
 
 
 def convert2panoptic(synthiaPath=None, outputFolder=None):
@@ -137,12 +138,12 @@ def main():
     args = parser.parse_args()
     # USER INPUTS BELOW
     # The root path where you save all you datasets
-    dataset_root = '/dataset/root/path'
+    dataset_root = '/data/home/wangxu/datasets'
     crowd_region_threshold = 0
     DEBUG = False
     if not DEBUG:
-        args.synthiaPath = '{}/Synthia/RAND_CITYSCAPES/GT/panoptic-labels-pklfiles-crowdth-{}-for-daformer/'.format(dataset_root, crowd_region_threshold)
-        args.outputFolder = '{}/Synthia/RAND_CITYSCAPES/GT/panoptic-labels-crowdth-{}-for-daformer/'.format(dataset_root, crowd_region_threshold)
+        args.synthiaPath = '{}/synthia/RAND_CITYSCAPES/GT/panoptic-labels-pklfiles-crowdth-{}-for-daformer/'.format(dataset_root, crowd_region_threshold)
+        args.outputFolder = '{}/synthia/RAND_CITYSCAPES/GT/panoptic-labels-crowdth-{}-for-daformer/'.format(dataset_root, crowd_region_threshold)
     else:
         args.synthiaPath = '{}/synthia_gt_visual/pickle_files-crowdth-{}'.format(dataset_root, crowd_region_threshold)
         args.outputFolder = '{}/synthia_gt_visual/png_files-crowdth-{}'.format(dataset_root, crowd_region_threshold)

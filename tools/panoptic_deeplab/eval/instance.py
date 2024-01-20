@@ -118,7 +118,8 @@ class CityscapesInstanceEvaluator:
             for groundTruthImg in groundTruthImgList:
                 if 'cityscapes' in self.dataset_name:
                     str1 = groundTruthImg.split('/')[5:]
-                    str2 = str1[0].split('_')[:3]
+                    str2 = str1[-1].split('_')[:3]
+                    # str2 = str1[0].split('_')[:3]
                     str3 = "_".join(str2) + '_gtFine_panoptic'
                 elif 'mapillary' in self.dataset_name:
                     str2 = groundTruthImg.split('/')[3]
@@ -128,7 +129,7 @@ class CityscapesInstanceEvaluator:
                 if str3 in img_list_debug:
                         groundTruthImgListTemp.append(groundTruthImg)
             groundTruthImgList = groundTruthImgListTemp
-            assert len(groundTruthImgList) == len(img_list_debug), 'during debug we need to have groundTruthImgList eual to img_list_debug'
+            assert len(groundTruthImgList) == len(img_list_debug), 'during debug we need to have groundTruthImgList equal to img_list_debug'
 
         assert len(groundTruthImgList), "Cannot find any ground truth images to use for evaluation"
 

@@ -24,7 +24,8 @@ python tools/convert_datasets/cityscapes.py /data/home/wangxu/datasets/cityscape
 python tools/convert_datasets/synthia.py /data/home/wangxu/datasets/synthia/RAND_CITYSCAPES --nproc 8
 
 ## Training
-python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
+CUDA_VISIBLE_DEVICES=0 python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
+CUDA_VISIBLE_DEVICES=0 nohup python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/home/wangxu/code/edaps/edaps_experiments/exp-00001/output/20230121_2.txt 2>&1 &
 
 ## Test
 CUDA_VISIBLE_DEVICES=1 python run_experiments.py --exp 6 --machine local

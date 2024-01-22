@@ -54,10 +54,11 @@ data = dict(
                 ),
         val=dict(
                 ann_dir="gtFine_panoptic_debug/cityscapes_panoptic_val",
-                data_root="data/cityscapes"
+                data_root="/data/home/wangxu/datasets/cityscapes"
         )
 )
-optimizer_config =  None
+# optimizer_config =  None
+optimizer_config = dict(grad_clip=None)
 
 optimizer = dict(
         lr=6e-05,
@@ -73,8 +74,8 @@ evaluation = dict(
     metric=["mIoU", "mPQ", "mAP"],
     eval_type="maskrcnn_panoptic",
     dataset_name="cityscapes",
-    gt_dir="data/cityscapes/gtFine/val",
-    gt_dir_panop="data/cityscapes/gtFine_panoptic",
+    gt_dir="/data/home/wangxu/datasets/cityscapes/gtFine/val",
+    gt_dir_panop="/data/home/wangxu/datasets/cityscapes/gtFine_panoptic",
     num_samples_debug=12,
     post_proccess_params=dict(
         num_classes=19,

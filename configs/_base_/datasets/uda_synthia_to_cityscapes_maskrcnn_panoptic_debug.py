@@ -4,7 +4,7 @@
 # ---------------------------------------------------------------
 
 dataset_type = 'CityscapesDataset'
-data_root = 'data/cityscapes/'
+data_root = '/data/home/wangxu/datasets/cityscapes/'
 img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 crop_size = (512, 512)
 num_classes = 19
@@ -58,10 +58,10 @@ data = dict(
                         type='UDADataset',
                         source=dict(
                             type='SynthiaDataset',
-                            data_root='data/synthia/',
+                            data_root='/data/home/wangxu/datasets/synthia/RAND_CITYSCAPES/',
                             img_dir='RGB',
                             depth_dir='',  # not in use
-                            ann_dir='panoptic-labels-crowdth-0-for-daformer/synthia_panoptic',
+                            ann_dir='GT/panoptic-labels-crowdth-0-for-daformer/synthia_panoptic',
                             pipeline=synthia_train_pipeline),
                         target=dict(
                             type=dataset_type,

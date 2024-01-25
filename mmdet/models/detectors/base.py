@@ -306,6 +306,7 @@ class BaseDetector(BaseModule, metaclass=ABCMeta):
                 segm_result = segm_result[0]  # ms rcnn
         else:
             bbox_result, segm_result = result, None
+        # do not draw bbox
         bboxes = np.vstack(bbox_result)
         labels = [
             np.full(bbox.shape[0], i, dtype=np.int32)

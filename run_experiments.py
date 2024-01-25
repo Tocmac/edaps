@@ -92,7 +92,7 @@ if __name__ == '__main__':
         if args.exp in [100, 101, 102]:
             # Experiments belongs to M-Dec-BU or S-Net models (Table 5 in the main paper).
             cfgs = generate_experiment_cfgs_bottomup(args.exp, args.machine)
-        elif args.exp in [1, 2, 3, 4, 50, 51, 52, 53, 6, 7, 8, 9, 10]:
+        elif args.exp in [1, 2, 3, 4, 50, 51, 52, 53, 6, 7, 71, 8, 9, 10]:
             # Experiments belongs to EDAPS (M-Dec-TD) mdoels.
             cfgs = generate_experiment_cfgs(args.exp, args.machine)
         else:
@@ -126,7 +126,7 @@ if __name__ == '__main__':
                 train.main([config_files[i]])
             elif cfg['exp'] in [1, 2, 3, 4, 50, 51]:
                 train_mmdet.main([config_files[i]])
-            elif cfg['exp'] in [52, 53, 6, 7, 8, 9, 10]:
+            elif cfg['exp'] in [52, 53, 6, 7, 8, 9, 10, 71]:
                 test_mmdet.main([config_files[i]])
             elif cfg['exp'] in [102]:
                 test.main([config_files[i]])

@@ -1,43 +1,53 @@
 ## EDAPS: Enhanced Domain-Adaptive Panoptic Segmentation
 # daformer
+```shell
 CUDA_VISIBLE_DEVICES=0 python run_experiments.py --config configs/daformer/gta2cs_uda_warm_fdthings_rcs_croppl_a999_daformer_mitb5_s0.py
 CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/daformer/gta2cs_uda_warm_fdthings_rcs_croppl_a999_daformer_mitb5_s0.py > /data/home/wangxu/code/DAFormer/work_dirs/local-basic/output/daformer_3.txt 2>&1 &
 sh test.sh work_dirs/211108_1622_gta2cs_daformer_s0_7f24c
 python -m tools.test path/to/config_file path/to/checkpoint_file --test-set --format-only --eval-option imgfile_prefix=labelTrainIds to_label_id=False
+```
 
 # hrda
+```shell
 python tools/convert_datasets/gta.py /media/rcus-cv/data/wangxu/dataset/gta --nproc 8
 python tools/convert_datasets/cityscapes.py /media/rcus-cv/data/wangxu/dataset/cityscapes --nproc 8
 CUDA_VISIBLE_DEVICES=1 python run_experiments.py --config configs/hrda/gtaHR2csHR_hrda.py
 CUDA_VISIBLE_DEVICES=0 nohup python run_experiments.py --config configs/hrda/gtaHR2csHR_hrda.py > /media/rcus-cv/data/wangxu/code/HRDA/work_dirs/local-basic/output/hrda.txt 2>&1 &
 sh test.sh work_dirs/gtaHR2csHR_hrda_246ef
+```
 
 # mic
+```shell
 CUDA_VISIBLE_DEVICES=1 python run_experiments.py --config configs/mic/gtaHR2csHR_mic_hrda.py
 CUDA_VISIBLE_DEVICES=1 nohup python run_experiments.py --config configs/mic/gtaHR2csHR_mic_hrda.py > /media/rcus-cv/data/wangxu/code/MIC/seg/work_dirs/local-basic/output/mic.txt 2>&1 &
 sh test.sh work_dirs/gtaHR2csHR_mic_hrda_650a8
+```
 
 # EDAPS
+```shell
 ## data preprocessing
 python tools/convert_datasets/gta.py data/gta --nproc 8
 python tools/convert_datasets/cityscapes.py /data/home/wangxu/datasets/cityscapes --nproc 8
 python tools/convert_datasets/synthia.py /data/home/wangxu/datasets/synthia/RAND_CITYSCAPES --nproc 8
 
 ## Training
+python run_experiments.py --config configs/edaps/ai_station_syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
 CUDA_VISIBLE_DEVICES=2 python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
-CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/home/wangxu/code/edaps/edaps_experiments/exp-00001/output/20230122_1.txt 2>&1 &
+CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/home/wangxu/code/edaps/edaps_experiments/exp-00001/output/20230124_1.txt 2>&1 &
 
 ### debug
 CUDA_VISIBLE_DEVICES=1 python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0_debug.py
 
-### multi card
+## multi card
 bash dist_train.sh configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0_debug.py 2
 
 ## Test
 CUDA_VISIBLE_DEVICES=1 python run_experiments.py --exp 6 --machine local
 
 ## Inference (generate_only_visuals_without_eval)
-python run_experiments.py --exp 7 --machine local
+CUDA_VISIBLE_DEVICES=1 python run_experiments.py --exp 7 --machine local
+```
+
 
 **by [Suman Saha](https://susaha.github.io/), [Lukas Hoyer](https://lhoyer.github.io/), 
 [Anton Obukhov](https://www.obukhov.ai/), [Dengxin Dai](https://vas.mpi-inf.mpg.de/dengxin/), 

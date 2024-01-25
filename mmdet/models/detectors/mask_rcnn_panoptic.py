@@ -11,6 +11,8 @@ from mmseg.core import add_prefix
 import torch
 import torch.nn.functional as F
 
+from mmdet.core.visualization import imshow_det_bboxes
+
 @DETECTORS.register_module()
 class MaskRCNNPanoptic(TwoStageDetector):
 
@@ -338,3 +340,4 @@ class MaskRCNNPanoptic(TwoStageDetector):
         # unravel batch dim
         seg_pred = list(seg_pred)
         return seg_pred
+

@@ -9,7 +9,7 @@ import torch
 from mmcv import Config, DictAction
 from mmcv.cnn import fuse_conv_bn
 from mmcv.runner import (get_dist_info, init_dist, load_checkpoint, wrap_fp16_model)
-from mmdet.apis import multi_gpu_test, single_gpu_test_uda, single_gpu_test_uda_for_visual_debug, single_gpu_test_uda_dump_results_to_disk
+from mmdet.apis import multi_gpu_test, single_gpu_test_uda, single_gpu_test_uda_for_visual_debug, single_gpu_test_uda_dump_results_to_disk, my_single_gpu_test_uda_for_visual_debug
 from mmseg.datasets import (build_dataloader, build_dataset)
 from mmdet.datasets import (replace_ImageToTensor)
 from mmdet.utils import (build_ddp, build_dp, compat_cfg, get_device, replace_cfg_vals, setup_multi_processes, update_data_root)
@@ -188,6 +188,17 @@ def main(args):
             # In this case we assume that all the prediction pngs for semantic, instance and panoptics have been already saved to disk
             # by the panoptic deeplab evaluation scripts under panop_eval_temp_folder/. So, we call the evalute function below.
             pass
+        elif cfg.generate_my_visuals_without_eval:
+            outputs = my_single_gpu_test_uda_for_visual_debug(
+                model,
+                data_loader,
+                show=args.show,
+                out_dir=args.show_dir,
+                debug=cfg.debug,
+                show_score_thr=args.show_score_thr,
+                dataset_name=cfg.evaluation.dataset_name,
+                panop_eval_temp_folder=panop_eval_temp_folder,
+            )
         else:
             outputs = single_gpu_test_uda(
                 model,
@@ -204,6 +215,7 @@ def main(args):
         outputs = multi_gpu_test( model, data_loader, args.tmpdir, args.gpu_collect or cfg.evaluation.get('gpu_collect', False))
 
     if cfg.generate_only_visuals_without_eval:
+    # inference mode
         pass
 
     elif cfg.evaluate_from_saved_png_predictions and not outputs:
@@ -227,6 +239,7 @@ def main(args):
         if json_file is not None and rank == 0:
             mmcv.dump(metric_dict, json_file)
     else:
+    # test mode
         if outputs:
             rank, _ = get_dist_info()
             if rank == 0:

@@ -160,6 +160,7 @@ def generate_experiment_cfgs(id, machine_name):
             'file_sys': file_sys,
             'launcher': launcher,
             'generate_only_visuals_without_eval': generate_only_visuals_without_eval,
+            'generate_my_visuals_without_eval': generate_my_visuals_without_eval,
             'dump_predictions_to_disk': dump_predictions_to_disk,
             'evaluate_from_saved_png_predictions': evaluate_from_saved_png_predictions,
             'panop_eval_temp_folder_previous': panop_eval_temp_folder_previous,
@@ -585,6 +586,16 @@ def generate_experiment_cfgs(id, machine_name):
         generate_only_visuals_without_eval = True
         dump_visuals_during_eval = True
         checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00007/checkpoints/edaps_synthia_to_cityscapes/'
+        cfg = config_from_vars()
+        cfg['checkpoint_path'] = checkpoint_path
+        cfgs.append(cfg)
+
+    elif id == 71:
+        batch_size = 1
+        workers_per_gpu = 0
+        generate_my_visuals_without_eval = True
+        # dump_visuals_during_eval = True
+        checkpoint_path = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00071/checkpoints/edaps_synthia_to_cityscapes/'
         cfg = config_from_vars()
         cfg['checkpoint_path'] = checkpoint_path
         cfgs.append(cfg)

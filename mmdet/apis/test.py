@@ -157,6 +157,113 @@ def single_gpu_test_uda_for_visual_debug(model,
     return None
 
 
+def my_single_gpu_test_uda_for_visual_debug(model,
+                    data_loader,
+                    show=False,
+                    out_dir=None,
+                    debug=False,
+                    show_score_thr=0.3,
+                    dataset_name=None,
+                    panop_eval_temp_folder=None,
+                    ):
+
+
+    model.eval()
+    results = []
+    dataset = data_loader.dataset
+    PALETTE = getattr(dataset, 'PALETTE', None)
+    prog_bar = mmcv.ProgressBar(len(dataset))
+    for i, data in enumerate(data_loader):
+        if True:
+            with torch.no_grad():
+                if debug or dataset_name == 'mapillary':
+                    rescale = False
+                else:
+                    rescale = True
+                # Forward call for inference
+                results = model(return_loss=False, rescale=rescale, **data)
+            i = 0
+            mask_th = 0.95
+            stuff_id = 0
+            train_id_to_eval_id = [7, 8, 11, 12, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33, 0]
+            thing_list = [11, 12, 13, 14, 15, 16, 17, 18]
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            use_semantic_decoder_for_instance_labeling = False
+            use_semantic_decoder_for_panoptic_labeling = False
+            image_filename_list = []
+            image_filename_list.append(data['img_metas'][0].data[0][0]['ori_filename'])
+            if dataset_name == 'cityscapes':
+                image_filename = image_filename_list[i].split('/')[1]
+                image_filename = image_filename.split('.')[0]
+            elif dataset_name == 'mapillary':
+                image_filename = image_filename_list[i]
+            out_dict = {}
+            # creating folders to dump PNGs generated during panoptc-deeplab evaluation
+            eval_folder = {}
+            eval_folder['instance'] = os.path.join(panop_eval_temp_folder, 'instance')
+            eval_folder['visuals'] = os.path.join(panop_eval_temp_folder, 'visuals')
+            eval_folder['semantic'] = os.path.join(panop_eval_temp_folder, 'semantic')
+            eval_folder['panoptic'] = os.path.join(panop_eval_temp_folder, 'panoptic')
+            # instance seg
+            out_dict['boxes'] = results[i]['ins_results'][0][0]
+            out_dict['masks'] = results[i]['ins_results'][0][1]
+            # semantic seg
+            pred_shape = results[i]['sem_results'][0].shape
+            out_dict['semantic'] = results[i]['sem_results'][0]
+            mask_th=0.95
+            instances, ins_seg, pan_seg_thing_classes = \
+                get_cityscapes_instance_format_for_maskrcnn(
+                    out_dict['boxes'],
+                    out_dict['masks'],
+                    pred_shape=pred_shape,
+                    mask_score_th=mask_th,
+                    sem_seg=out_dict['semantic'],
+                    device=device,
+                    thing_list=thing_list,
+                    use_semantic_decoder_for_instance_labeling=use_semantic_decoder_for_instance_labeling,
+                    use_semantic_decoder_for_panoptic_labeling=use_semantic_decoder_for_panoptic_labeling,
+                    nms_th=None,
+                    intersec_th=None,
+                )
+            # generatig the panoptic segmentation from semantic and instance segs
+            out_dict['semantic'] = torch.from_numpy(out_dict['semantic']).long().to(device)
+            ins_seg = torch.from_numpy(ins_seg).long().to(device)
+            label_divisor = 1000
+            stuff_area = 2048
+            ignore_label = 255
+            panoptic_pred = merge_semantic_and_instance(
+                                                        out_dict['semantic'].unsqueeze(dim=0),
+                                                        ins_seg.unsqueeze(dim=0),
+                                                        label_divisor,
+                                                        thing_list,
+                                                        stuff_area,
+                                                        void_label=label_divisor * ignore_label
+                                                    )
+            # fig, ax = plt.subplots()
+            fig = plt.figure()
+            plt.subplots_adjust(top=1, bottom=0, left=0, right=1, hspace=0, wspace=0)
+            ax = fig.add_subplot()
+            ax.axis('off')
+            DPI = fig.get_dpi()
+            fig.set_size_inches(2048.0 / float(DPI), 1024.0 / float(DPI))
+            # fig.set_size_inches(1024.0 / float(DPI), 512.0 / float(DPI))
+            panoptic_pred = panoptic_pred.squeeze(0).cpu().numpy()
+            panoptic_pred = prep_pan_for_vis(panoptic_pred, dataset_name=dataset_name, debug=debug,
+                             blend_ratio=1.0, img=None, runner_mode='val',
+                             ax=ax, label_divisor=1000)
+            ax.imshow(panoptic_pred)
+            # plt.imshow(panoptic_pred)
+            cityname = image_filename_list[i].split('/')[0]
+            out_dir = os.path.join(eval_folder['visuals'], 'edaps_pred_visuals', cityname)
+            os.makedirs(out_dir, exist_ok=True)
+            out_vis_fname_pan_Seg = os.path.join(out_dir, f'{image_filename}_panoptic_seg.png')
+            fig.savefig(out_vis_fname_pan_Seg)  # save the figure to file
+            # mmcv.imwrite(panoptic_pred, out_vis_fname_pan_Seg)
+            plt.close(fig)
+            print(f'*** file saved at :{out_vis_fname_pan_Seg}')
+    return None
+
+
 def single_gpu_test_uda(model,
                     data_loader,
                     show=False,
@@ -208,6 +315,8 @@ def single_gpu_test_uda(model,
         for _ in range(batch_size):
             prog_bar.update()
     return results
+
+
 
 def single_gpu_test(model,
                     data_loader,

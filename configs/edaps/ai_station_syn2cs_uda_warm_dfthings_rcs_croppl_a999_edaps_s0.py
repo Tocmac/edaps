@@ -42,21 +42,46 @@ uda = dict(
         disable_mix_masks=False
 )
 
+
+dataset_type = 'CityscapesDataset'
+data_root = '/222010525/dataset/cityscapes/'
 data = dict(
-	    samples_per_gpu=2, # batchsize (2 source  + 2 target images)
-        workers_per_gpu=4,
-        train=dict(
-                rare_class_sampling=dict(
-                                        min_pixels=3000,
-                                        class_temp=0.01,
-                                        min_crop_ratio=0.5
-                                        )
-                ),
-        val=dict(
-                ann_dir="gtFine_panoptic/cityscapes_panoptic_val",
-                data_root="/data/home/wangxu/datasets/cityscapes/"
-        )
-)
+            samples_per_gpu=2,
+            workers_per_gpu=4,
+            train=dict(
+                        type='UDADataset',
+                        source=dict(
+                            type='SynthiaDataset',
+                            data_root='/222010525/dataset/synthia/RAND_CITYSCAPES/',
+                            img_dir='RGB',
+                            depth_dir='',  # not in use
+                            ann_dir='GT/panoptic-labels-crowdth-0-for-daformer/synthia_panoptic'),
+                        target=dict(
+                            type=dataset_type,
+                            data_root=data_root,
+                            img_dir='leftImg8bit/train',
+                            depth_dir='', # not in use
+                            ann_dir='gtFine_panoptic/cityscapes_panoptic_train_trainId'),
+                        rare_class_sampling=dict(
+                            min_pixels=3000,
+                            class_temp=0.01,
+                            min_crop_ratio=0.5)
+                    ),
+            val=dict(
+                type=dataset_type,
+                data_root=data_root,
+                img_dir='leftImg8bit/val',
+                depth_dir='', # not in use
+                ann_dir='gtFine_panoptic/cityscapes_panoptic_val'),
+            test=dict(
+                type=dataset_type,
+                data_root=data_root,
+                img_dir='leftImg8bit/val',
+                depth_dir='', # not in use
+                ann_dir='gtFine_panoptic/cityscapes_panoptic_val')
+            )
+
+
 optimizer_config =  None
 
 optimizer = dict(
@@ -73,8 +98,8 @@ evaluation = dict(
     metric=["mIoU", "mPQ", "mAP"],
     eval_type="maskrcnn_panoptic",
     dataset_name="cityscapes",
-    gt_dir="/data/home/wangxu/datasets/cityscapes/gtFine/val",
-    gt_dir_panop="/data/home/wangxu/datasets/cityscapes/gtFine_panoptic",
+    gt_dir="/222010525/dataset/cityscapes/gtFine/val",
+    gt_dir_panop="/222010525/dataset/cityscapes/gtFine_panoptic",
     num_samples_debug=12,
     post_proccess_params=dict(
         num_classes=19,
@@ -110,7 +135,7 @@ runner = dict(
 
 checkpoint_config = dict(
     by_epoch=False,
-    interval=5000,
+    interval=40000,
     max_keep_ckpts=1
 )
 

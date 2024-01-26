@@ -27,14 +27,17 @@ sh test.sh work_dirs/gtaHR2csHR_mic_hrda_650a8
 ```shell
 ## data preprocessing
 python tools/convert_datasets/gta.py data/gta --nproc 8
-python tools/convert_datasets/cityscapes.py /data/home/wangxu/datasets/cityscapes --nproc 8
-python tools/convert_datasets/synthia.py /data/home/wangxu/datasets/synthia/RAND_CITYSCAPES --nproc 8
+python tools/convert_datasets/cityscapes.py /data/wx/dataset/cityscapes/ --nproc 8
+python tools/convert_datasets/synthia.py /data/wx/dataset/synthia/RAND_CITYSCAPES/ --nproc 8
 
 ## Training
 python run_experiments.py --config configs/edaps/ai_station_syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
+python run_experiments.py --config configs/edaps/104_syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
 CUDA_VISIBLE_DEVICES=2 python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
 CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/home/wangxu/code/edaps/edaps_experiments/exp-00001/output/20230124_1.txt 2>&1 &
 CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/home/wangxu/code/edaps/edaps_experiments/exp-00001/output/20240126_1.txt 2>&1 &
+# 104
+nohup python run_experiments.py --config configs/edaps/104_syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/wx/code/edaps/edaps_experiments/output/20240126_1.txt 2>&1 &
 
 ### debug
 CUDA_VISIBLE_DEVICES=1 python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0_debug.py

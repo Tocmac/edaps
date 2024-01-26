@@ -375,6 +375,7 @@ def generate_experiment_cfgs(id, machine_name):
     nms_th = None
     intersec_th = None
     generate_only_visuals_without_eval = False
+    generate_my_visuals_without_eval = False
     dump_predictions_to_disk = False
     # diffusion data
     include_diffusion_data = False

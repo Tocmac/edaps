@@ -57,8 +57,8 @@ data = dict(
                 data_root="/data/home/wangxu/datasets/cityscapes"
         )
 )
-# optimizer_config =  None
-optimizer_config = dict(grad_clip=None)
+optimizer_config =  None
+# optimizer_config = dict(grad_clip=None)
 
 optimizer = dict(
         lr=6e-05,

@@ -33,7 +33,7 @@ python tools/convert_datasets/synthia.py /data/wx/dataset/synthia/RAND_CITYSCAPE
 ## Training
 # 32
 CUDA_VISIBLE_DEVICES=2 python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
-python run_experiments.py --config configs/edaps/small_bs_syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
+CUDA_VISIBLE_DEVICES=2 python run_experiments.py --config configs/edaps/small_bs_syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py
 CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/home/wangxu/code/edaps/edaps_experiments/exp-00001/output/20230124_1.txt 2>&1 &
 CUDA_VISIBLE_DEVICES=2 nohup python run_experiments.py --config configs/edaps/syn2cs_uda_warm_dfthings_rcs_croppl_a999_edaps_s0.py > /data/home/wangxu/code/edaps/edaps_experiments/exp-00001/output/20240126_1.txt 2>&1 &
 # 104

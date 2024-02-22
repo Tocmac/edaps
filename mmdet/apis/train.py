@@ -167,10 +167,10 @@ def train_detector(model, dataset, cfg, distributed=False, validate=False, times
     fp16_cfg = cfg.get('fp16', None)
     if fp16_cfg is not None:
         optimizer_config = Fp16OptimizerHook(**cfg.optimizer_config, **fp16_cfg, distributed=distributed)
-    # elif distributed and 'type' not in cfg.optimizer_config:
-        # optimizer_config = OptimizerHook(**cfg.optimizer_config)
-    elif distributed:
-        optimizer_config = cfg.optimizer_config
+    elif distributed and 'type' not in cfg.optimizer_config:
+        optimizer_config = OptimizerHook(**cfg.optimizer_config)
+    # elif distributed:
+    #     optimizer_config = cfg.optimizer_config
     else:
         optimizer_config = cfg.optimizer_config
 

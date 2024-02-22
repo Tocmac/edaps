@@ -51,7 +51,7 @@ if __name__ == '__main__':
     parser.add_argument('--machine', type=str, default=machine_name, help='Name of the machine')
     parser.add_argument('--exp_root', type=str, default=None, help='Root folder to save all EDAPS experimental results')
     parser.add_argument('--exp_sub', type=str, default=None, help='sub folder to save experimental results benong to a spefic experiment Id')
-    parser.add_argument('--local_rank', type=int, default=0)
+    # parser.add_argument('--local_rank', type=int, default=0)
     args = parser.parse_args()
     assert (args.config is None) != (args.exp is None), 'Either config or exp has to be defined.'
 

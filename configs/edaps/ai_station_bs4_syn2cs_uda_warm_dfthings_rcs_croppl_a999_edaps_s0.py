@@ -20,7 +20,6 @@ n_cpus = 16
 mem_per_cpu = 16000
 machine = "local"
 euler_template_fname = "euler_template_slurm_syn2city.sh"
-# resume_from = '/data/home/wangxu/code/edaps/edaps_experiments/exp-00001/work_dirs/local-exp00001/240124_1635_syn2cs_dacs_rcs001_cpl_maskrcnn_mitb5_poly10warm_s0_6bc1d/iter_20000.pth'
 resume_from = None
 load_from = None
 only_eval = False
@@ -32,7 +31,6 @@ file_sys = "Slurm"
 launcher = None
 generate_only_visuals_without_eval = False
 seed = 0
-find_unused_parameters = True
 uda = dict(
         pseudo_weight_ignore_top=15,
         pseudo_weight_ignore_bottom=120,
@@ -44,23 +42,47 @@ uda = dict(
         disable_mix_masks=False
 )
 
+
+dataset_type = 'CityscapesDataset'
+data_root = '/222010525/dataset/cityscapes/'
 data = dict(
-	    samples_per_gpu=1, # batchsize (2 source  + 2 target images)
-        workers_per_gpu=2,
-        train=dict(
-                rare_class_sampling=dict(
-                                        min_pixels=3000,
-                                        class_temp=0.01,
-                                        min_crop_ratio=0.5
-                                        )
-                ),
-        val=dict(
-                ann_dir="gtFine_panoptic/cityscapes_panoptic_val",
-                data_root="/data/home/wangxu/datasets/cityscapes/"
-        )
-)
+            samples_per_gpu=4,
+            workers_per_gpu=8,
+            train=dict(
+                        type='UDADataset',
+                        source=dict(
+                            type='SynthiaDataset',
+                            data_root='/222010525/dataset/synthia/RAND_CITYSCAPES/',
+                            img_dir='RGB',
+                            depth_dir='',  # not in use
+                            ann_dir='GT/panoptic-labels-crowdth-0-for-daformer/synthia_panoptic'),
+                        target=dict(
+                            type=dataset_type,
+                            data_root=data_root,
+                            img_dir='leftImg8bit/train',
+                            depth_dir='', # not in use
+                            ann_dir='gtFine_panoptic/cityscapes_panoptic_train_trainId'),
+                        rare_class_sampling=dict(
+                            min_pixels=3000,
+                            class_temp=0.01,
+                            min_crop_ratio=0.5)
+                    ),
+            val=dict(
+                type=dataset_type,
+                data_root=data_root,
+                img_dir='leftImg8bit/val',
+                depth_dir='', # not in use
+                ann_dir='gtFine_panoptic/cityscapes_panoptic_val'),
+            test=dict(
+                type=dataset_type,
+                data_root=data_root,
+                img_dir='leftImg8bit/val',
+                depth_dir='', # not in use
+                ann_dir='gtFine_panoptic/cityscapes_panoptic_val')
+            )
+
+
 optimizer_config =  None
-# optimizer_config = dict(grad_clip=None)
 
 optimizer = dict(
         lr=6e-05,
@@ -76,8 +98,8 @@ evaluation = dict(
     metric=["mIoU", "mPQ", "mAP"],
     eval_type="maskrcnn_panoptic",
     dataset_name="cityscapes",
-    gt_dir="/data/home/wangxu/datasets/cityscapes/gtFine/val",
-    gt_dir_panop="/data/home/wangxu/datasets/cityscapes/gtFine_panoptic",
+    gt_dir="/222010525/dataset/cityscapes/gtFine/val",
+    gt_dir_panop="/222010525/dataset/cityscapes/gtFine_panoptic",
     num_samples_debug=12,
     post_proccess_params=dict(
         num_classes=19,

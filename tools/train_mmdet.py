@@ -42,7 +42,8 @@ def parse_args(args):
     parser.add_argument('--deterministic', action='store_true', help='whether to set deterministic options for CUDNN backend.')
     parser.add_argument('--options', nargs='+', action=DictAction, help=paht1)
     parser.add_argument('--cfg-options', nargs='+', action=DictAction, help=paht2)
-    parser.add_argument('--launcher', choices=['none', 'pytorch', 'slurm', 'mpi'], default='none', help='job launcher')
+    # parser.add_argument('--launcher', choices=['none', 'pytorch', 'slurm', 'mpi'], default='none', help='job launcher')
+    parser.add_argument('--launcher', choices=['none', 'pytorch', 'slurm', 'mpi'], default='pytorch', help='job launcher')
     parser.add_argument('--local_rank', type=int, default=0)
     parser.add_argument('--auto-scale-lr', action='store_true', help='enable automatically scaling LR.')
     args = parser.parse_args(args)
@@ -89,6 +90,7 @@ def main(args):
         init_dist(args.launcher, **cfg.dist_params)
         _, world_size = get_dist_info()
         cfg.gpu_ids = range(world_size)
+
     mmcv.mkdir_or_exist(osp.abspath(cfg.work_dir))
     cfg.dump(osp.join(cfg.work_dir, osp.basename(args.config)))
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
